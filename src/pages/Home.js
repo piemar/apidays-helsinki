@@ -1,26 +1,21 @@
+import * as React from 'react';
 import Chart from "../components/Chart";
+import Header from "../components/Header";
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
-import TextField from '@mui/material/TextField';
-import * as React from 'react';
 import Grid from "@mui/material/Unstable_Grid2";
 import InputBase from '@mui/material/InputBase';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import DirectionsIcon from '@mui/icons-material/Directions';
 import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import Modal from "@mui/material/Modal";
-
-import PokemonCard from "../components/PokemonCard";
+import CharacterCard from "../components/CharacterCard";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { useState, useRef } from "react";
-
+import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
@@ -28,126 +23,176 @@ const Item = styled(Paper)(({ theme }) => ({
   textAlign: 'center',
   color: theme.palette.text.secondary,
 }));
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+    background: {
+      default: "#001e2b",
+      paper: "#001e2b",
+    },
+  },
+});
 
-export default function Home () {
 
-  const [pokemons, setPokemons] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+export default function Home() {
+
+  const [characters, setCharacters] = useState([]);
   const [email, setEmail] = useState("");
+  const [showEmail, setShowEmail] = useState(false);
   const [searching, setSearching] = useState(false);
   const [selectedCharacter, setSelectedCharacter] = useState(null);
   const searchInputRef = useRef();
+  const childRef = useRef(null);
+  const [showChart, setShowChart] = useState(false);
+  const [showSearchResult, setSearchResult] = useState(false);
 
-    function handleEmailChange(e) {
-      setEmail(e.target.value);
+  function handleEmailChange(e) {
+    setEmail(e.target.value);
+  }
+  function showWorldMap() {
+    setShowChart(true);
+  }
+
+  function handleSearch() {
+    if (searchInputRef.current.value.length > 2) {
+      var requestOptions = {
+        method: "GET",
+        redirect: "follow",
+      };
+      fetch(
+        "https://data.mongodb-api.com/app/pokemon-bpmfw/endpoint/search?search=" + searchInputRef.current.value,
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((result) => {
+          setCharacters(result);
+          setSearchResult(true)
+          setSearching(false);
+        })
+        .catch((error) => console.log("error", error));
+    } else {
+      setCharacters([]);
+      setSearching(false);
     }
-  
-    function handleSearch() {
-      console.log(searchInputRef.current.value.length);
-      if (searchInputRef.current.value.length > 2) {
-        setSearching(true);
-        console.log(searchInputRef.current.value);
-        var requestOptions = {
-          method: "GET",
-          redirect: "follow",
-        };
-        fetch(
-          "https://data.mongodb-api.com/app/pokemon-bpmfw/endpoint/search?search=" + searchInputRef.current.value,
-          requestOptions
-        )
-          .then((response) => response.json())
-          .then((result) => {
-            setPokemons(result);
-            setSearching(false);
-          })
-          .catch((error) => console.log("error", error));
-      } else {
-        setPokemons([]);
-        setSearching(false);
-      }
-    }
-  
-    const characterClick = (character) => {
-      console.log(character);
-      setSelectedCharacter(character);
-      setShowModal(true);
-    }
+  }
+
+  const characterClick = (character) => {
+    console.log(character);
+    setSelectedCharacter(character);
+    setSearchResult(false)
+    setShowEmail(true);
+
+
+  }
 
   return (
-    
-    <div>      
-      <h1>Demo</h1>
-      <Box sx={{ width: '100%' }}>
-      <Stack spacing={2}>
-        <Item>
-        <Paper
-      component="form"
-      sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}
-    >
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+
+      <div>
+        <Header />
+        <Box sx={{ width: '100%' }}>
+          <Stack>
+            <Item>
+              <Paper
+                component="form"
+                sx={{ p: '2px 4px', display: 'flex' }}
+              >
+
+                <IconButton sx={{ p: '10px' }} aria-label="menu">
+                  <MenuIcon />
+                </IconButton>
+
+                <InputBase
+                  sx={{ ml: 1, flex: 2 }}
+                  placeholder="Search for your character"
+                  inputProps={{ 'aria-label': 'Search for your character' }}
+                  inputRef={searchInputRef}
+                  onChange={handleSearch}
+
+                />
+
+                <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+                  <SearchIcon />
+                </IconButton>
+              </Paper>
+
+            </Item>
+            {showEmail && (
+              <Item>
+                <Paper
+                  component="form"
+                  sx={{ p: '2px 4px', display: 'flex', alignItems: 'center' }}
+                >
 
 
-      <IconButton sx={{ p: '10px' }} aria-label="menu">
-        <MenuIcon />
-      </IconButton>
-      <InputBase
-        sx={{ ml: 1, flex: 2 }}
-        placeholder="Your email"
-        inputProps={{ 'aria-label': 'Your Email Adress' }}
-        inputRef={searchInputRef}
-        onChange={handleSearch}
-
-      />
-
-      <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
-        <SearchIcon />
-      </IconButton>
-    </Paper>
-          
-        </Item>  
-<Item>
-{pokemons.length > 0 &&
-            pokemons.map((pokemon) => {
-              console.log(pokemon);
-              return (
-                <Grid onClick={() => characterClick(pokemon)}>
-                  <PokemonCard
-                    id={pokemon.id}
-                    name={pokemon.name}
-                    species={pokemon.species.name}
-                    sprite={pokemon.sprite}
+                  <IconButton sx={{ p: '10px' }} aria-label="menu">
+                    <MenuIcon />
+                  </IconButton>
+                  <InputBase
+                    sx={{ ml: 1, flex: 2 }}
+                    placeholder="Email adress"
+                    inputProps={{ 'aria-label': 'Specify email adress' }}
+                    value={email}
+                    onChange={handleEmailChange}
                   />
-                </Grid>
-              );
-            })}
-          {pokemons.length < 1 && (
-            <Typography variant="h4" gutterBottom>
-              No results
-            </Typography>
-          )}
-  </Item>             
-        <Item>
-          {pokemons.length>0 && (
-            <Chart userEmail={email} selectedCharacter={selectedCharacter}/>
-          )}
-        </Item>
-      </Stack>      
-
-      </Box>  
+                  <IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={showWorldMap}>
+                    <PlayCircleFilledIcon />
+                  </IconButton>
 
 
-      <Modal
-        open={showModal}
-        onClose={() => setShowModal(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box>
-          Please enter email
-          <input type="text" value={email} onChange={handleEmailChange} />
+                </Paper>
+
+              </Item>
+            )}
+          </Stack>
         </Box>
-      </Modal>
-      {email}
-    </div>
-    
+        <Box sx={{ width: '100%' }}>
+          <Stack spacing={2}>
+            <Item>
+
+            </Item>
+
+            <Item>
+
+              {characters.length > 0 && showSearchResult &&
+                characters.map((character) => {
+
+                  return (
+                    <Grid onClick={() => characterClick(character)}>
+                      <CharacterCard
+                        id={character.id}
+                        name={character.name}
+                        species={character.species.name}
+                        sprite={character.sprite}
+                      />
+                    </Grid>
+                  );
+                })}
+
+              {characters.length < 1 && (
+                <Typography variant="h4" gutterBottom>
+                  No results
+                </Typography>
+              )}
+
+            </Item>
+            <Item>
+              {characters.length > 0 && showChart && (
+
+                <Chart userEmail={email} selectedCharacter={selectedCharacter} />
+              )}
+            </Item>
+          </Stack>
+
+        </Box>
+
+        {email}
+      </div>
+    </ThemeProvider>
+
   )
+
+
+
 }
