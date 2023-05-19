@@ -1,8 +1,6 @@
 import ChartsEmbedSDK from "@mongodb-js/charts-embed-dom";
 import { useState, useEffect, useRef } from "react";
 
-const appId = "data-tuuih";
-
 const dataApiBaseUrl = "https://data.mongodb-api.com/app/pokemon-bpmfw/endpoint/";
 
 const sdk = new ChartsEmbedSDK({
@@ -23,6 +21,7 @@ export default function Chart(props) {
   const [accessToken, setAccessToken] = useState(null);
   const [show, setShow] = useState(false);
   const email = useRef(props.userEmail);
+  const appId = useRef(props.appId);
   const character = useRef(props.selectedCharacter);
   let token = null;
 
@@ -34,7 +33,7 @@ export default function Chart(props) {
     render().catch((e) => window.alert(e.message));
 
     const authenticate = async () => {
-      const authUrl = `https://realm.mongodb.com/api/client/v2.0/app/${appId}/auth/providers/anon-user/login`
+      const authUrl = `https://realm.mongodb.com/api/client/v2.0/app/`+appId.current.toString()+`/auth/providers/anon-user/login`
       // Authenticate with the server
       // Anonymous authentication must be enabled in app services
       const tokens = await fetch(authUrl).then(res => res.json());
@@ -45,6 +44,7 @@ export default function Chart(props) {
   }, []);
 
   useEffect(() => {
+    appId.current = props.appId;
     email.current = props.userEmail;
     character.current = props.selectedCharacter;
   }, [props])
@@ -59,11 +59,13 @@ export default function Chart(props) {
       method: "POST",
       redirect: "follow"
     };
-    console.log(payload, props, email.current, character.current);
-    console.log("^^^^^^");
+    
+    console.log(appId);
+    console.log("^^^^");
     var long = payload.data.geopoint.value.coordinates[0];
     var lat = payload.data.geopoint.value.coordinates[1];
-    const response = await fetch(dataApiBaseUrl + '/hint?long=' + long + '&lat=' + lat + '&email=' + email.current + '&characterId=' + character.current.id,
+    const response = await fetch(`https://data.mongodb-api.com/app/`+appId.current.toString()+`/endpoint/hint?long=`+long+'&lat='+lat+'&email='+email.current+'&characterId='+character.current.id, 
+    // const response = await fetch(dataApiBaseUrl + '/hint?long=' + long + '&lat=' + lat + '&email=' + email.current + '&characterId=' + character.current.id,
       requestOptions
     );
 

@@ -16,6 +16,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { useState, useRef } from "react";
 import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
+const applicatonId="lotr-alugj";
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
@@ -38,6 +39,7 @@ export default function Home() {
 
   const [characters, setCharacters] = useState([]);
   const [email, setEmail] = useState("");
+  const [appId, setAppID] = useState(applicatonId);
   const [showEmail, setShowEmail] = useState(false);
   const [searching, setSearching] = useState(false);
   const [selectedCharacter, setSelectedCharacter] = useState(null);
@@ -60,24 +62,23 @@ export default function Home() {
         redirect: "follow",
       };
       fetch(
-        "https://data.mongodb-api.com/app/pokemon-bpmfw/endpoint/search?search=" + searchInputRef.current.value,
+        `https://data.mongodb-api.com/app/`+appId+"/endpoint/search?search=" + searchInputRef.current.value,
         requestOptions
       )
         .then((response) => response.json())
         .then((result) => {
           setCharacters(result);
           setSearchResult(true)
-          setSearching(false);
+          //setSearching(false);
         })
         .catch((error) => console.log("error", error));
     } else {
       setCharacters([]);
-      setSearching(false);
+      //setSearching(false);
     }
   }
 
   const characterClick = (character) => {
-    console.log(character);
     setSelectedCharacter(character);
     setSearchResult(false)
     setShowEmail(true);
@@ -105,7 +106,7 @@ export default function Home() {
 
                 <InputBase
                   sx={{ ml: 1, flex: 2 }}
-                  placeholder="Search for your character"
+                  placeholder="Search for your characters"
                   inputProps={{ 'aria-label': 'Search for your character' }}
                   inputRef={searchInputRef}
                   onChange={handleSearch}
@@ -180,7 +181,7 @@ export default function Home() {
             <Item>
               {characters.length > 0 && showChart && (
 
-                <Chart userEmail={email} selectedCharacter={selectedCharacter} />
+                <Chart appId={appId} userEmail={email} selectedCharacter={selectedCharacter} />
               )}
             </Item>
           </Stack>
