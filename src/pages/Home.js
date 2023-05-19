@@ -3,10 +3,13 @@ import Chart from "../components/Chart";
 import Header from "../components/Header";
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
+import Divider from '@mui/material/Divider';
+
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import Grid from "@mui/material/Unstable_Grid2";
-import InputBase from '@mui/material/InputBase';
+import TextField from '@mui/material/TextField';
+
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
@@ -16,7 +19,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { useState, useRef } from "react";
 import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
-const applicatonId="lotr-alugj";
+
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
@@ -34,17 +37,16 @@ const darkTheme = createTheme({
   },
 });
 
-
+const applicationId = "lotr-alugj";
 export default function Home() {
 
   const [characters, setCharacters] = useState([]);
   const [email, setEmail] = useState("");
-  const [appId, setAppID] = useState(applicatonId);
+  const [characterName, setCharacterName] = useState();
   const [showEmail, setShowEmail] = useState(false);
-  const [searching, setSearching] = useState(false);
+  const [showSearchInputField, setShowSearchInputField] = useState(true);
   const [selectedCharacter, setSelectedCharacter] = useState(null);
   const searchInputRef = useRef();
-  const childRef = useRef(null);
   const [showChart, setShowChart] = useState(false);
   const [showSearchResult, setSearchResult] = useState(false);
 
@@ -52,6 +54,8 @@ export default function Home() {
     setEmail(e.target.value);
   }
   function showWorldMap() {
+    setShowSearchInputField(false)
+    setShowEmail(false)
     setShowChart(true);
   }
 
@@ -62,7 +66,7 @@ export default function Home() {
         redirect: "follow",
       };
       fetch(
-        `https://data.mongodb-api.com/app/`+appId+"/endpoint/search?search=" + searchInputRef.current.value,
+        `https://data.mongodb-api.com/app/` + applicationId + "/endpoint/search?search=" + searchInputRef.current.value,
         requestOptions
       )
         .then((response) => response.json())
@@ -79,6 +83,7 @@ export default function Home() {
   }
 
   const characterClick = (character) => {
+    setCharacterName(character.name);
     setSelectedCharacter(character);
     setSearchResult(false)
     setShowEmail(true);
@@ -94,35 +99,36 @@ export default function Home() {
         <Header />
         <Box sx={{ width: '100%' }}>
           <Stack>
-            <Item>
-              <Paper
-                component="form"
-                sx={{ p: '2px 4px', display: 'flex' }}
-              >
+            {showSearchInputField && (
+              <Item>
+                <Paper
+                  sx={{ p: '2px 4px', display: 'flex' }}
+                >
 
-                <IconButton sx={{ p: '10px' }} aria-label="menu">
-                  <MenuIcon />
-                </IconButton>
+                  <IconButton sx={{ p: '10px' }} aria-label="menu">
+                    <MenuIcon />
+                  </IconButton>
 
-                <InputBase
-                  sx={{ ml: 1, flex: 2 }}
-                  placeholder="Search for your characters"
-                  inputProps={{ 'aria-label': 'Search for your character' }}
-                  inputRef={searchInputRef}
-                  onChange={handleSearch}
+                  <TextField
+                    sx={{ ml: 1, flex: 2 }}
+                    placeholder="Search for your characters"
+                    inputProps={{ 'aria-label': 'Search for your character' }}
+                    inputRef={searchInputRef}
+                    onChange={handleSearch}
 
-                />
 
-                <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
-                  <SearchIcon />
-                </IconButton>
-              </Paper>
+                  />
 
-            </Item>
+                  <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+                    <SearchIcon />
+                  </IconButton>
+                </Paper>
+
+              </Item>
+            )}
             {showEmail && (
               <Item>
                 <Paper
-                  component="form"
                   sx={{ p: '2px 4px', display: 'flex', alignItems: 'center' }}
                 >
 
@@ -130,7 +136,7 @@ export default function Home() {
                   <IconButton sx={{ p: '10px' }} aria-label="menu">
                     <MenuIcon />
                   </IconButton>
-                  <InputBase
+                  <TextField
                     sx={{ ml: 1, flex: 2 }}
                     placeholder="Email adress"
                     inputProps={{ 'aria-label': 'Specify email adress' }}
@@ -181,15 +187,24 @@ export default function Home() {
             <Item>
               {characters.length > 0 && showChart && (
 
-                <Chart appId={appId} userEmail={email} selectedCharacter={selectedCharacter} />
+                <Chart appId={applicationId} userEmail={email} selectedCharacter={selectedCharacter} />
               )}
             </Item>
           </Stack>
 
         </Box>
-
-        {email}
       </div>
+      <Grid container>
+          <Grid item xs>
+            Character:&nbsp;{characterName}
+          </Grid>
+          <Divider orientation="vertical" flexItem>
+          </Divider>
+          <Grid item xs>
+            Email:&nbsp;{email}
+          </Grid>
+        </Grid>
+
     </ThemeProvider>
 
   )

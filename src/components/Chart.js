@@ -1,16 +1,16 @@
 import ChartsEmbedSDK from "@mongodb-js/charts-embed-dom";
 import { useState, useEffect, useRef } from "react";
 
-const dataApiBaseUrl = "https://data.mongodb-api.com/app/pokemon-bpmfw/endpoint/";
-
 const sdk = new ChartsEmbedSDK({
   baseUrl: "https://charts.mongodb.com/charts-pierre-petersson-demo-pro-hvvjx", // Optional: ~REPLACE~ with the Base URL from your Embed Chart dialog
 });
 
 const chart = sdk.createChart({
   chartId: "6462a492-36b3-4564-8f6d-adc5fc53bb79", // Optional: ~REPLACE~ with the Chart ID from your Embed Chart dialog
-
-  height: "700px"
+  theme: "dark",
+  autoRefresh: false,
+  height:"700px",
+  maxDataAge: 1 
 });
 const chartStyle = {
   display: "contents"
@@ -65,7 +65,6 @@ export default function Chart(props) {
     var long = payload.data.geopoint.value.coordinates[0];
     var lat = payload.data.geopoint.value.coordinates[1];
     const response = await fetch(`https://data.mongodb-api.com/app/`+appId.current.toString()+`/endpoint/hint?long=`+long+'&lat='+lat+'&email='+email.current+'&characterId='+character.current.id, 
-    // const response = await fetch(dataApiBaseUrl + '/hint?long=' + long + '&lat=' + lat + '&email=' + email.current + '&characterId=' + character.current.id,
       requestOptions
     );
 
