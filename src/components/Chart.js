@@ -58,8 +58,6 @@ export default function Chart(props) {
       redirect: "follow"
     };
     
-    console.log(character);
-    console.log("^^^^");
     var long = payload.data.geopoint.value.coordinates[0];
     var lat = payload.data.geopoint.value.coordinates[1];
     const response = await fetch(`https://data.mongodb-api.com/app/`+appId.current.toString()+`/endpoint/hint?long=`+long+'&lat='+lat+'&email='+email.current+'&characterId='+character.current.id, 
@@ -68,7 +66,6 @@ export default function Chart(props) {
 
     const result = await response.json();
     chart.refresh();
-    console.log(result);
   }
   return (
     <>
