@@ -32,4 +32,25 @@ ATLAS_PROJECT_ID=5f49dca27a4f7e35487f7e0c
 REALM_CLIENT_APP_ID=lotr-clugi
 ```
 
-#### Get the client_app_id
+#### Update realm_config.json 
+Update app_id field in the app/realm_config.json with the id you got when you created the app.
+
+Update in App.js file and the below field with your app_id. 
+
+```
+const atlasAppId='lotr-alugj';
+```
+
+### Deploy application to App Services
+
+Run below command in root of repo, it will build the application and deploy it to App Services
+```
+source env.var
+./deploy.sh
+```
+
+### Access the application 
+You can now access the application from the endpoint described, in hosting/config.json   
+```
+"app_default_domain": "lotr-alugj.mongodbstitch.com"
+```

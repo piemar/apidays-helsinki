@@ -21,9 +21,8 @@ export default function Chart(props) {
   const [accessToken, setAccessToken] = useState(null);
   const [show, setShow] = useState(false);
   const email = useRef(props.userEmail);
-  const appId = useRef(props.appId);
+  const appId = useRef(props.atlasAppId);
   const character = useRef(props.selectedCharacter);
-  let token = null;
 
   useEffect(() => {
     const render = async () => {
@@ -38,13 +37,12 @@ export default function Chart(props) {
       // Anonymous authentication must be enabled in app services
       const tokens = await fetch(authUrl).then(res => res.json());
       setAccessToken(tokens.access_token);
-      token = tokens.access_token;
     }
     authenticate();
   }, []);
 
   useEffect(() => {
-    appId.current = props.appId;
+    appId.current = props.atlasAppId;
     email.current = props.userEmail;
     character.current = props.selectedCharacter;
   }, [props])
@@ -60,7 +58,7 @@ export default function Chart(props) {
       redirect: "follow"
     };
     
-    console.log(appId);
+    console.log(character);
     console.log("^^^^");
     var long = payload.data.geopoint.value.coordinates[0];
     var lat = payload.data.geopoint.value.coordinates[1];

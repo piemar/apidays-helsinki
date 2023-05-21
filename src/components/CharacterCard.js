@@ -10,7 +10,7 @@ export default function CharacterCard({ id, name, sprite, species }) {
           Pokemon
         </Typography>
         <Typography align="center" variant="h5" component="div">
-          <img id={id} src={sprite} onclick="printSS(this)" />
+          <img id={id} src={sprite}  alt=""/>
         </Typography>
 
         <Typography align="center" variant="h5" component="div">
