@@ -40,7 +40,6 @@ export default function Search(props) {
   function handleEmailChange(e) {
     setEmail(e.target.value);
   }
-
   function handleSearch() {
     if (searchInputRef.current.value.length > 2) {
       var requestOptions = {

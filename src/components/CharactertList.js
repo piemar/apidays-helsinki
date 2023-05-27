@@ -9,6 +9,7 @@ import { styled } from '@mui/material/styles';
 import Grid from "@mui/material/Unstable_Grid2";
 import CharacterCard from "../components/CharacterCard";
 import { useState, useEffect, useRef } from "react";
+
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
@@ -64,8 +65,7 @@ export default function CharacterList(props) {
                     }>
                     <CharacterCard
                       id={character.id}
-                      name={character.name}
-                      species={character.species.name}
+                      name={character.name}                      
                       sprite={character.sprite}
                     />
                   </Grid>

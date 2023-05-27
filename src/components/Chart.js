@@ -1,4 +1,5 @@
 import ChartsEmbedSDK from "@mongodb-js/charts-embed-dom";
+import EmbedVideo from '../components/EmbedVideo';
 import { useState, useEffect, useRef } from "react";
 
 const sdk = new ChartsEmbedSDK({
@@ -20,6 +21,7 @@ export default function Chart(props) {
   const [payload, setPayload] = useState({});
   const [accessToken, setAccessToken] = useState(null);
   const [show, setShow] = useState(false);
+  const [showRingMovie, setRingMovie] = useState(false);
   const email = useRef(props.userEmail);
   const appId = useRef(props.atlasAppId);
   const character = useRef(props.selectedCharacter);
@@ -64,7 +66,12 @@ export default function Chart(props) {
       requestOptions
     );
 
-    const result = await response.json();
+    const result = await response.json();   
+    if (result.length>0 && result[0].numberOfHintsWithinLocation > 0){
+      setShow(false);
+      setRingMovie(true);
+      document.getElementById("chart").remove();
+    }
     chart.refresh();
   }
   return (
@@ -74,6 +81,13 @@ export default function Chart(props) {
       <div>
         <button onClick={() => setShow(!show)}>Show Payload</button>
       </div>
+
+      {showRingMovie && (
+
+      <EmbedVideo embedId="https://www.youtube.com/embed/sZEpWvQFXqQ?start=10&autoplay=1&cc_load_policy=1" />
+      )}
+
+
       {show && (
         <div id="info">
           <ul>
@@ -96,6 +110,4 @@ export default function Chart(props) {
         </div>
       )}
     </>
-
-  )
-}
+)}
