@@ -1,6 +1,11 @@
 # Lord of the Rings MongoDB Atlas Demo
 The setup commands and all are tested on MacOS
 
+# Credits
+Thanks to Joel Lord @joellord for helping out building out the react application as myself am a total newbie. Thanks to Angelo Reale @angeloreale for the idea of the Ring of power game, to demonstrate MongoDB Atlas capabilities. 
+
+
+
 ## Prerequistes
 
 * A running Atlas cluster
