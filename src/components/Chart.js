@@ -1,4 +1,5 @@
 import ChartsEmbedSDK from "@mongodb-js/charts-embed-dom";
+import EmbedVideo from '../components/EmbedVideo';
 import { useState, useEffect, useRef } from "react";
 
 const sdk = new ChartsEmbedSDK({
@@ -20,10 +21,10 @@ export default function Chart(props) {
   const [payload, setPayload] = useState({});
   const [accessToken, setAccessToken] = useState(null);
   const [show, setShow] = useState(false);
+  const [showRingMovie, setRingMovie] = useState(false);
   const email = useRef(props.userEmail);
-  const appId = useRef(props.appId);
+  const appId = useRef(props.atlasAppId);
   const character = useRef(props.selectedCharacter);
-  let token = null;
 
   useEffect(() => {
     const render = async () => {
@@ -38,13 +39,12 @@ export default function Chart(props) {
       // Anonymous authentication must be enabled in app services
       const tokens = await fetch(authUrl).then(res => res.json());
       setAccessToken(tokens.access_token);
-      token = tokens.access_token;
     }
     authenticate();
   }, []);
 
   useEffect(() => {
-    appId.current = props.appId;
+    appId.current = props.atlasAppId;
     email.current = props.userEmail;
     character.current = props.selectedCharacter;
   }, [props])
@@ -60,17 +60,19 @@ export default function Chart(props) {
       redirect: "follow"
     };
     
-    console.log(appId);
-    console.log("^^^^");
     var long = payload.data.geopoint.value.coordinates[0];
     var lat = payload.data.geopoint.value.coordinates[1];
     const response = await fetch(`https://data.mongodb-api.com/app/`+appId.current.toString()+`/endpoint/hint?long=`+long+'&lat='+lat+'&email='+email.current+'&characterId='+character.current.id, 
       requestOptions
     );
 
-    const result = await response.json();
+    const result = await response.json();   
+    if (result.length>0 && result[0].numberOfHintsWithinLocation > 0){
+      setShow(false);
+      setRingMovie(true);
+      document.getElementById("chart").remove();
+    }
     chart.refresh();
-    console.log(result);
   }
   return (
     <>
@@ -79,6 +81,13 @@ export default function Chart(props) {
       <div>
         <button onClick={() => setShow(!show)}>Show Payload</button>
       </div>
+
+      {showRingMovie && (
+
+      <EmbedVideo embedId="https://www.youtube.com/embed/sZEpWvQFXqQ?start=10&autoplay=1&cc_load_policy=1" />
+      )}
+
+
       {show && (
         <div id="info">
           <ul>
@@ -101,6 +110,4 @@ export default function Chart(props) {
         </div>
       )}
     </>
-
-  )
-}
+)}

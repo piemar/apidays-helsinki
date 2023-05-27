@@ -4,5 +4,6 @@ const headerStyle = {
   height: "200px"
 }
 export default function Header() {
-  return <img src="header.png" style={headerStyle} />;
+  
+  return <img src="header.png" style={headerStyle} alt="LOTR LOGO" />;
 }

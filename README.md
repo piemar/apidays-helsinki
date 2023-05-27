@@ -1,4 +1,5 @@
 # Lord of the Rings MongoDB Atlas Demo
+The setup commands and all are tested on MacOS
 
 ## Prerequistes
 
@@ -6,6 +7,8 @@
 * An Project API Key that has role Project Owner, for more information see: 
 https://www.mongodb.com/docs/atlas/configure-api-access/#create-an-api-key-for-a-project
 * Access to the ProjectId which your Atlas Cluster is running
+## Create database and load with with data
+
 
 ## Install Realm CLI
 ```
@@ -32,4 +35,34 @@ ATLAS_PROJECT_ID=5f49dca27a4f7e35487f7e0c
 REALM_CLIENT_APP_ID=lotr-clugi
 ```
 
-#### Get the client_app_id
+#### Update realm_config.json 
+Update app_id field in the app/realm_config.json with the id you got when you created the app.
+
+Update in App.js file and the below field with your app_id. 
+
+```
+const atlasAppId='lotr-alugj';
+```
+
+### Deploy application to App Services
+
+Run below command in root of repo, it will build the application and deploy it to App Services
+```
+source env.var
+./deploy.sh
+```
+
+### Access the application 
+You can now access the application from the endpoint described, in hosting/config.json   
+
+Example below:
+```
+"app_default_domain": "lotr-alugj.mongodbstitch.com"
+```
+
+
+## Clean up anonymous users
+When prompted for appId use the atlasAppId you have.
+```
+realm-cli users delete
+```

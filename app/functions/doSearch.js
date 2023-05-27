@@ -5,16 +5,20 @@ exports = function({ query, headers, body}, response) {
       return({"error" : "No search query present"})
     }
     // Querying a mongodb service:
-    return context.services.get("mongodb-atlas").db("pokemon").collection("pokemons").aggregate(
-        [
-            {
-              '$search': {
-              'index' : "autocomplete",
-                'autocomplete': {
-                    'query': query.search,
-                    'path': "name"
-                }
+    return context.services.get("mongodb-atlas").db("lordofthering").collection("characters").aggregate(
+      [
+        {
+        $search: {
+            "index": "lotr",
+            "autocomplete": {
+              "path": "name",
+              "query": query.search,
+              "fuzzy": {
+                "maxEdits": 2,
+                "prefixLength": 2
               }
             }
-        ]);
+          }
+        }
+      ]);
 };
