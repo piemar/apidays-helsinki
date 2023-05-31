@@ -1,5 +1,4 @@
 #!/bin/bash
-rm -rf "$APPLICATION_NAME"
 npm run build
 
 configDataSource='{
