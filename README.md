@@ -13,7 +13,7 @@ Thanks to Joel Lord @joellord for helping out building out the react application
 3. Created an API Key inside that project, and recorded the public and private api keys,for more information see https://www.mongodb.com/docs/atlas/configure-api-access/#create-an-api-key-for-a-project
 4. Installed dependencies for this script: node, mongodb-realm-cli"
 
-## Create database and load with with data
+
 
 
 ## Install Realm CLI
@@ -62,8 +62,7 @@ Update in App.js file and the below field with your REALM_CLIENT_APP_ID that you
 ```
 const atlasAppId='lotr-alugj';
 ```
-
-## Create Collections characters and hints
+## Create database and load with with data
 Connect to you MongoDB Cluster, using the MongoShell, you can access mongoshell from the MongoDB Compass. And then run these commands
 
 ```
