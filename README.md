@@ -10,7 +10,7 @@ Thanks to Joel Lord @joellord for helping out building out the react application
 
 1. Created a new MongoDB Atlas project for your LOTR app
 2. Created a new cluster inside that project for LOTR data that is running
-3. Created an API Key inside that project, and recorded the public,for more information see https://www.mongodb.com/docs/atlas/configure-api-access/#create-an-api-key-for-a-project
+3. Created an API Key inside that project, and recorded the public and private api keys,for more information see https://www.mongodb.com/docs/atlas/configure-api-access/#create-an-api-key-for-a-project
 4. and private key details
 5. Installed dependencies for this script: node, mongodb-realm-cli"
 
