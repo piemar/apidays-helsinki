@@ -1,6 +1,6 @@
-# Create an Atlas Cluster
-
-# Create a MongoDB TimeSeries collection.
+// Create an Atlas Cluster
+use lordofthering
+// Create a MongoDB TimeSeries collection.
 db.createCollection(
     "hints",
     {
@@ -17,3 +17,80 @@ db.hints.insertOne({
   timestamp: new Date(),
   location: { type: "Point", coordinates: [ -73.9928, 40.7193 ] }
 })
+
+db.characters.insertMany([{
+    "id": 10241,
+    "name": "Aragorn, Sam, Gandalf, Frodo, Merry, Legolas, Pippin, Gimli, Boromir",
+    "sprite": "characters/fotr0853.jpg"
+},
+{
+    "id": 10242,
+    "name": "Gollum",
+    "sprite": "characters/ttt0059.jpg"
+},
+{
+    "id": 10243,
+    "name": "Legolas",
+    "sprite": "characters/unuse16.jpg"
+},
+{
+    "id": 10244,
+    "name": "Thranduil",
+    "sprite": "characters/htrlr146.jpg"
+},
+{
+    "id": 10244,
+    "name": "Ring of power",
+    "sprite": "characters/fotr0796.jpg"
+},
+{
+    "id": 10244,
+    "name": "Frodo",
+    "sprite": "characters/rotk2513.jpg"
+},
+{
+    "id": 10246,
+    "name": "Bilbo",
+    "sprite": "characters/fotr0869.jpg"
+},
+{
+    "id": 10247,
+    "name": "Arwen",
+    "sprite": "characters/rotk0363.jpg"
+},
+{
+    "id": 10248,
+    "name": "Nazgul",
+    "sprite": "characters/fotr0025.jpg"
+},
+{
+    "id": 10249,
+    "name": "Pippin",
+    "sprite": "characters/unuse09.jpg"
+},
+{
+    "id": 10250,
+    "name": "Éowyn",
+    "sprite": "characters/unuse09.jpg"
+},
+{
+    "id": 10251,
+    "name": "Galadriel",
+    "sprite": "characters/fotr0002.jpg"
+},
+{
+    "id": 10252,
+    "name": "Arwen",
+    "sprite": "characters/fotr0589.jpg"
+},
+{
+    "id": 10253,
+    "name": "Boromir, Pippin, Sam, Legolas, Aragorn",
+    "sprite": "characters/unuse02.jpg"
+},
+{
+    "id": 10254,
+    "name": "Thorin",
+    "sprite": "characters/htrlr102.jpg"
+}
+]   )
