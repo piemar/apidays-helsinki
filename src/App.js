@@ -17,7 +17,7 @@ const darkTheme = createTheme({
 
 
 function App() {
-  const atlasAppId='lotr-alugj';
+  const atlasAppId="lotr-alugj";
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
