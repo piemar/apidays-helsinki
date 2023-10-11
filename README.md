@@ -37,16 +37,15 @@ REALM_CLIENT_APP_ID=
 ```
 
 ## Create an New App in Atlas App Services
-You will need to create an App in Atlas services, here is how you do it using the Realm CLI. You can also do it using the UI.
+You will need to create an App in Atlas services. You can do it with a script, running setup.sh. You can also do it using the UI.
 
 ```
-source env.var
-realm-cli apps create -y -n "$APPLICATION_NAME" --project="$ATLAS_PROJECT_ID" --cluster="$ATLAS_CLUSTER_NAME"
+./setup.sh
 ```
 
-Once you have created the app you will need to get the client_app_id from the console output from the above command and update REALM_CLIENT_APP_ID in the env.var file.
+The setup script will also update the APP ID variable and App.js.
 
-Example:
+env.var example:
 ```
 ATLAS_CLUSTER_NAME=demo-cluster
 ATLAS_PUBLIC_API_KEY=wancyeds
@@ -56,14 +55,12 @@ APPLICATION_NAME=lotr2
 REALM_CLIENT_APP_ID=lotr-alugj
 ```
 
-#### Update App.js
-Update in App.js file and the below field with your REALM_CLIENT_APP_ID that you have in the env.var file. 
-
+App.js example:
 ```
 const atlasAppId='lotr-alugj';
 ```
 ## Create database and load with with data
-Connect to you MongoDB Cluster, using the MongoShell, you can access mongoshell from the MongoDB Compass. And then run these commands
+Connect to your MongoDB Cluster using the MongoShell, you can also access mongoshell from within the MongoDB Compass. And then run these commands
 
 ```
 // Create lordofthering ring database
@@ -210,7 +207,7 @@ To be able to embed the chart we need to follow the below steps:
 
 ### Create Atlas Search Index
 
-1. Create a Atlas Search index and set index name to lotr on your lordofthering database on collection hints. Use the following index configuration, use json editor. For more information see: https://www.mongodb.com/docs/atlas/atlas-search/create-index/
+1. Create an Atlas Search index and set index name to "lotr" on your lordofthering database on collection characters. Use the following index configuration, use json editor. For more information see: https://www.mongodb.com/docs/atlas/atlas-search/create-index/
 
 Use below index definitions
 ```
@@ -235,13 +232,14 @@ You should see something like this:
 
 <img src="setup/images/search_index.png"/>
 
-Just follow the next steps and use defualt settings and you will now have a Atlas Search Index created for your hints collection in the lordofthering database.
+Just follow the next steps and use default settings and you will now have a Atlas Search Index created for your characters collection in the lordofthering database.
 
 ### Deploy application to App Services
 
-Run below command in root of repo, it will build the application and deploy it to App Services
+Before you can host your app in Atlas, you need to enable hosting. For more information see https://www.mongodb.com/docs/atlas/app-services/hosting/enable-hosting/
+
+Run below command in the root of repo, it will build the application and deploy it to App Services
 ```
-source env.var
 ./deploy.sh
 ```
 

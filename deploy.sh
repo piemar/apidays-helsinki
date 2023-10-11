@@ -1,4 +1,6 @@
 #!/bin/bash
+source env.var
+npm install
 npm run build
 
 configDataSource='{
